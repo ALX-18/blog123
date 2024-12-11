@@ -5,6 +5,7 @@ import React from 'react';
 import './index.css';
 import Interview from "./components/interview";
 import Sports from "./components/sports";
+import Articles from "./components/articles";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                     <Route path="/" element={<Acceuil />} />
                     <Route path="/interview" element={<Interview />} />
                     <Route path="/sports" element={<Sports />} />
+                    <Route path="/articles" element={<Articles />} />
                 </Routes>
             </div>
         </Router>
