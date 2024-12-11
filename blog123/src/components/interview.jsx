@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom"; // React Router
 import { Button } from "./ui/button.jsx";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card.jsx";
-import { Input } from "./ui/input.jsx";
 import React from "react";
-import { Search, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
-export default function Acceuil() {
+export default function Interview() {
     return (
         <div className="flex min-h-screen flex-col">
             <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -30,32 +29,24 @@ export default function Acceuil() {
                     <div className="container px-4 md:px-6">
                         <div className="flex flex-col items-center space-y-4 text-center">
                             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-                                Découvrez les Stars du Sport
+                                Interviews Inspirantes
                             </h1>
                             <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                                Interviews exclusives, articles passionnants et histoires inspirantes de sportifs professionnels et espoirs.
+                                Plongez dans les parcours captivants des athlètes, leur vision et leurs défis au quotidien.
                             </p>
-                            <div className="w-full max-w-sm space-y-2">
-                                <form className="flex space-x-2">
-                                    <Input className="flex-1" placeholder="Rechercher un athlète, un sport..." type="search" />
-                                    <Button type="submit" className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31]">
-                                        <Search className="h-4 w-4" />
-                                        <span className="sr-only">Rechercher</span>
-                                    </Button>
-                                </form>
-                            </div>
                         </div>
                     </div>
                 </section>
 
                 <section className="w-full py-12 md:py-24 lg:py-32">
                     <div className="container px-4 md:px-6">
-                        <h2 className="text-3xl font-bold tracking-tighter mb-8">Dernières Interviews</h2>
+                        <h2 className="text-3xl font-bold tracking-tighter mb-8">Interviews Populaires</h2>
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {[
-                                { name: "Léa Martin", sport: "Tennis", image: "/placeholder.svg?height=400&width=600" },
-                                { name: "Thomas Dubois", sport: "Football", image: "/placeholder.svg?height=400&width=600" },
-                                { name: "Sophie Leroux", sport: "Natation", image: "/placeholder.svg?height=400&width=600" },
+                                { name: "Léa Martin", description: "Une étoile montante du tennis.", image: "/placeholder.svg?height=400&width=600" },
+                                { name: "Thomas Dubois", description: "Le prodige du football européen.", image: "/placeholder.svg?height=400&width=600" },
+                                { name: "Sophie Leroux", description: "Championne en natation synchronisée.", image: "/placeholder.svg?height=400&width=600" },
+                                { name: "Alexandre Roche", description: "Pionnier de l'esport français.", image: "/placeholder.svg?height=400&width=600" },
                             ].map((interview, index) => (
                                 <Card key={index} className="overflow-hidden">
                                     <img src={interview.image} alt={interview.name} className="w-full h-48 object-cover" />
@@ -63,36 +54,13 @@ export default function Acceuil() {
                                         <CardTitle>{interview.name}</CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <p className="text-sm text-muted-foreground">{interview.sport}</p>
-                                        <Link to="/interviews">
+                                        <p className="text-sm text-muted-foreground mb-4">{interview.description}</p>
+                                        <Link to={`/interview/${index}`}>
                                             <Button variant="link" className="p-0 h-auto font-semibold text-[#E03C31] hover:text-[#F6C54A]">
                                                 Lire l'interview
                                                 <ArrowRight className="ml-2 h-4 w-4" />
                                             </Button>
                                         </Link>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
-                    <div className="container px-4 md:px-6">
-                        <h2 className="text-3xl font-bold tracking-tighter mb-8">Articles Récents</h2>
-                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                            {[
-                                { title: "L'impact de la technologie dans le sport moderne", category: "Technologie" },
-                                { title: "Les défis de la reconversion des athlètes professionnels", category: "Carrière" },
-                                { title: "Nutrition sportive : mythes et réalités", category: "Santé" },
-                            ].map((article, index) => (
-                                <Card key={index}>
-                                    <CardHeader>
-                                        <CardTitle>{article.title}</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-sm text-muted-foreground mb-4">{article.category}</p>
-                                        <Button variant="outline" className="w-full">Lire l'article</Button>
                                     </CardContent>
                                 </Card>
                             ))}
