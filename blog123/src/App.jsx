@@ -7,6 +7,7 @@ import Interview from "./components/interview";
 import Sports from "./components/sports";
 import Articles from "./components/articles";
 
+import CreateArticle from "./components/CreateArticle.jsx";
 function App() {
     return (
         <Router>
