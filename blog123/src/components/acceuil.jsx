@@ -4,6 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card.jsx";
 import { Input } from "./ui/input.jsx";
 import React from "react";
 import { Search, ArrowRight } from "lucide-react";
+import leaMartin from "../assets/images/lea-martin.png"
+import thomasDubois from "../assets/images/thomas-dubois.png";
+import sophieLeroux from "../assets/images/sophie-leroux.png";
 
 export default function Acceuil() {
     const isLoggedIn = false; // Simule l'état de connexion de l'utilisateur
@@ -59,33 +62,40 @@ export default function Acceuil() {
                 </section>
 
                 <section className="w-full py-12 md:py-24 lg:py-32">
-                    <div className="container px-4 md:px-6">
-                        <h2 className="text-3xl font-bold tracking-tighter mb-8">Dernières Interviews</h2>
-                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                            {[
-                                { name: "Léa Martin", sport: "Tennis", image: "/placeholder.svg?height=400&width=600" },
-                                { name: "Thomas Dubois", sport: "Football", image: "/placeholder.svg?height=400&width=600" },
-                                { name: "Sophie Leroux", sport: "Natation", image: "/placeholder.svg?height=400&width=600" },
-                            ].map((interview, index) => (
-                                <Card key={index} className="overflow-hidden">
-                                    <img src={interview.image} alt={interview.name} className="w-full h-48 object-cover" />
-                                    <CardHeader>
-                                        <CardTitle>{interview.name}</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-sm text-muted-foreground">{interview.sport}</p>
-                                        <Link to="/interviews">
-                                            <Button variant="link" className="p-0 h-auto font-semibold text-[#E03C31] hover:text-[#F6C54A]">
-                                                Lire l'interview
-                                                <ArrowRight className="ml-2 h-4 w-4" />
-                                            </Button>
-                                        </Link>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    </div>
-                </section>
+    <div className="container px-4 md:px-6">
+        <h2 className="text-3xl font-bold tracking-tighter mb-8">Dernières Interviews</h2>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[
+                { name: "Léa Martin", sport: "Tennis", image: leaMartin },
+                { name: "Thomas Dubois", sport: "Football", image: thomasDubois },
+                { name: "Sophie Leroux", sport: "Natation", image: sophieLeroux },
+            ].map((interview, index) => (
+                <Card key={index} className="overflow-hidden">
+                    <img
+                        src={interview.image}
+                        alt={interview.name}
+                        className="w-full h-48 object-cover"
+                    />
+                    <CardHeader>
+                        <CardTitle>{interview.name}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-sm text-muted-foreground">{interview.sport}</p>
+                        <Link to="/interviews">
+                            <Button
+                                variant="link"
+                                className="p-0 h-auto font-semibold text-[#E03C31] hover:text-[#F6C54A]"
+                            >
+                                Lire l'interview
+                                <ArrowRight className="ml-2 h-4 w-4" />
+                            </Button>
+                        </Link>
+                    </CardContent>
+                </Card>
+            ))}
+        </div>
+    </div>
+</section>
 
                 <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
                     <div className="container px-4 md:px-6">

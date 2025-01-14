@@ -3,6 +3,10 @@ import { Button } from "./ui/button.jsx";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card.jsx";
 import React from "react";
 import { ArrowRight } from "lucide-react";
+import leaMartin from "../assets/images/lea-martin.png"
+import thomasDubois from "../assets/images/thomas-dubois.png";
+import sophieLeroux from "../assets/images/sophie-leroux.png";
+
 
 export default function Interview() {
     return (
@@ -38,25 +42,32 @@ export default function Interview() {
                     </div>
                 </section>
 
-                <section className="w-full py-12 md:py-24 lg:py-32">
+                
+                                <section className="w-full py-12 md:py-24 lg:py-32">
                     <div className="container px-4 md:px-6">
-                        <h2 className="text-3xl font-bold tracking-tighter mb-8">Interviews Populaires</h2>
+                        <h2 className="text-3xl font-bold tracking-tighter mb-8">Dernières Interviews</h2>
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {[
-                                { name: "Léa Martin", description: "Une étoile montante du tennis.", image: "/placeholder.svg?height=400&width=600" },
-                                { name: "Thomas Dubois", description: "Le prodige du football européen.", image: "/placeholder.svg?height=400&width=600" },
-                                { name: "Sophie Leroux", description: "Championne en natation synchronisée.", image: "/placeholder.svg?height=400&width=600" },
-                                { name: "Alexandre Roche", description: "Pionnier de l'esport français.", image: "/placeholder.svg?height=400&width=600" },
+                                { name: "Léa Martin", sport: "Tennis", image: leaMartin },
+                                { name: "Thomas Dubois", sport: "Football", image: thomasDubois },
+                                { name: "Sophie Leroux", sport: "Natation", image: sophieLeroux },
                             ].map((interview, index) => (
                                 <Card key={index} className="overflow-hidden">
-                                    <img src={interview.image} alt={interview.name} className="w-full h-48 object-cover" />
+                                    <img
+                                        src={interview.image}
+                                        alt={interview.name}
+                                        className="w-full h-48 object-cover"
+                                    />
                                     <CardHeader>
                                         <CardTitle>{interview.name}</CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <p className="text-sm text-muted-foreground mb-4">{interview.description}</p>
-                                        <Link to={`/interview/${index}`}>
-                                            <Button variant="link" className="p-0 h-auto font-semibold text-[#E03C31] hover:text-[#F6C54A]">
+                                        <p className="text-sm text-muted-foreground">{interview.sport}</p>
+                                        <Link to="/interviews">
+                                            <Button
+                                                variant="link"
+                                                className="p-0 h-auto font-semibold text-[#E03C31] hover:text-[#F6C54A]"
+                                            >
                                                 Lire l'interview
                                                 <ArrowRight className="ml-2 h-4 w-4" />
                                             </Button>
@@ -67,6 +78,7 @@ export default function Interview() {
                         </div>
                     </div>
                 </section>
+                
             </main>
 
             <footer className="w-full border-t py-6 md:py-0">
