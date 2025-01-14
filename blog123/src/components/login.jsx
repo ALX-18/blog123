@@ -1,9 +1,31 @@
-import { Link } from "react-router-dom"; // React Router
+import { Link, useNavigate } from "react-router-dom"; // React Router
 import { Button } from "./ui/button.jsx";
 import { Input } from "./ui/input.jsx";
-import React from "react";
+import React, { useState } from "react";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Login() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+
+    const navigate = useNavigate();
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        const auth = getAuth();
+
+        try {
+            // Connexion utilisateur avec Firebase Authentication
+            await signInWithEmailAndPassword(auth, email, password);
+            alert("Connexion réussie !");
+            navigate("/"); // Rediriger après connexion
+        } catch (err) {
+            setError("Adresse e-mail ou mot de passe incorrect.");
+            console.error("Erreur lors de la connexion :", err);
+        }
+    };
+
     return (
         <div className="flex min-h-screen flex-col">
             <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -26,7 +48,8 @@ export default function Login() {
             <main className="flex flex-1 items-center justify-center bg-muted">
                 <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-lg">
                     <h1 className="text-2xl font-bold text-center text-[#E03C31]">Connexion</h1>
-                    <form className="space-y-4">
+                    {error && <p className="text-center text-red-500">{error}</p>}
+                    <form className="space-y-4" onSubmit={handleLogin}>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-muted-foreground">
                                 Adresse e-mail
@@ -35,6 +58,8 @@ export default function Login() {
                                 type="email"
                                 id="email"
                                 placeholder="Entrez votre e-mail"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="w-full mt-1"
                                 required
                             />
@@ -47,6 +72,8 @@ export default function Login() {
                                 type="password"
                                 id="password"
                                 placeholder="Entrez votre mot de passe"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 className="w-full mt-1"
                                 required
                             />
