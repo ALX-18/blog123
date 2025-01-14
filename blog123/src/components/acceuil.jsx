@@ -6,6 +6,8 @@ import React from "react";
 import { Search, ArrowRight } from "lucide-react";
 
 export default function Acceuil() {
+    const isLoggedIn = false; // Simule l'état de connexion de l'utilisateur
+
     return (
         <div className="flex min-h-screen flex-col">
             <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -19,9 +21,17 @@ export default function Acceuil() {
                         <Link to="/sports" className="transition-colors hover:text-[#E03C31]">Sports</Link>
                         <Link to="/about" className="transition-colors hover:text-[#E03C31]">À propos</Link>
                     </nav>
-                    <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31]">
-                        S'abonner
-                    </Button>
+                    {isLoggedIn ? (
+                        <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31]">
+                            S'abonner
+                        </Button>
+                    ) : (
+                        <Link to="/login">
+                            <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31]">
+                                Connexion
+                            </Button>
+                        </Link>
+                    )}
                 </div>
             </header>
 
