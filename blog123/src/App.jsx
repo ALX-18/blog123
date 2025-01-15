@@ -25,8 +25,6 @@ function App() {
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/register" element={<CreateAccount />} />
                 </Routes>
-                <Auth/>
-                <CreateArticle/>
             </div>
         </Router>
     );
