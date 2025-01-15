@@ -114,18 +114,19 @@ export default function ArticlesAndCreate() {
                             />
                             <Input
                                 type="text"
-                                placeholder="Description de l'article"
-                                value={newDescription}
-                                onChange={(e) => setNewDescription(e.target.value)}
-                                required
-                            />
-                            <Input
-                                type="text"
                                 placeholder="URL de l'image"
                                 value={newImage}
                                 onChange={(e) => setNewImage(e.target.value)}
                                 required
                             />
+                            <textarea
+                                placeholder="Description de l'article"
+                                value={newDescription}
+                                onChange={(e) => setNewDescription(e.target.value)}
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#E03C31]"
+                                rows="5"
+                                required
+                            ></textarea>
                             <Button
                                 type="submit"
                                 className="w-full bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31]"
