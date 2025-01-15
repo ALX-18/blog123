@@ -1,18 +1,47 @@
-import React from 'react';
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button.jsx";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card.jsx";
+import { Input } from "./ui/input.jsx";
 import { ArrowRight } from 'lucide-react';
+import { db } from "../config/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
-export default function Articles() {
-    const articles = [
+export default function ArticlesAndCreate() {
+    const [articles, setArticles] = useState([
         { title: "L'Impact de la Technologie dans le Sport", description: "Découvrez comment la technologie change la donne dans le monde sportif", image: "/placeholder.svg?height=400&width=600" },
         { title: "Les Bienfaits du Sport pour la Santé", description: "Un aperçu des raisons pour lesquelles le sport est vital pour le bien-être", image: "/placeholder.svg?height=400&width=600" },
         { title: "Top 10 des Sports à Suivre en 2024", description: "Un classement des sports qui promettent de captiver l'attention cette année", image: "/placeholder.svg?height=400&width=600" },
         { title: "Les Femmes dans le Sport", description: "Mettre en lumière les succès des femmes athlètes à travers le monde", image: "/placeholder.svg?height=400&width=600" },
         { title: "L'Économie du Sport", description: "Analyse de l'impact économique des grands événements sportifs", image: "/placeholder.svg?height=400&width=600" },
         { title: "La Durabilité dans le Sport", description: "Comment le sport contribue à un avenir durable", image: "/placeholder.svg?height=400&width=600" },
-    ];
+    ]);
+
+    const [newTitle, setNewTitle] = useState("");
+    const [newDescription, setNewDescription] = useState("");
+    const [newImage, setNewImage] = useState("");
+
+    const handleCreateArticle = async (e) => {
+        e.preventDefault();
+
+        try {
+            // Ajouter un nouvel article dans la base de données Firestore
+            await addDoc(collection(db, "articles"), {
+                title: newTitle,
+                description: newDescription,
+                image: newImage,
+                createdAt: serverTimestamp(),
+            });
+
+            alert("Article créé avec succès !");
+            setNewTitle("");
+            setNewDescription("");
+            setNewImage("");
+        } catch (error) {
+            console.error("Erreur lors de la création de l'article :", error);
+            alert("Une erreur est survenue. Veuillez réessayer.");
+        }
+    };
 
     return (
         <div className="flex min-h-screen flex-col">
@@ -33,7 +62,7 @@ export default function Articles() {
                 </div>
             </header>
 
-            <main className="flex-1">
+            <main className="flex-1 py-12">
                 <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-background to-muted">
                     <div className="container px-4 md:px-6">
                         <div className="flex flex-col items-center space-y-4 text-center">
@@ -69,6 +98,41 @@ export default function Articles() {
                                 </Card>
                             ))}
                         </div>
+                    </div>
+                </section>
+
+                <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-background to-muted">
+                    <div className="container px-4 md:px-6">
+                        <h2 className="text-3xl font-bold tracking-tighter mb-8">Créer un Nouvel Article</h2>
+                        <form className="space-y-4" onSubmit={handleCreateArticle}>
+                            <Input
+                                type="text"
+                                placeholder="Titre de l'article"
+                                value={newTitle}
+                                onChange={(e) => setNewTitle(e.target.value)}
+                                required
+                            />
+                            <Input
+                                type="text"
+                                placeholder="Description de l'article"
+                                value={newDescription}
+                                onChange={(e) => setNewDescription(e.target.value)}
+                                required
+                            />
+                            <Input
+                                type="text"
+                                placeholder="URL de l'image"
+                                value={newImage}
+                                onChange={(e) => setNewImage(e.target.value)}
+                                required
+                            />
+                            <Button
+                                type="submit"
+                                className="w-full bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31]"
+                            >
+                                Créer l'article
+                            </Button>
+                        </form>
                     </div>
                 </section>
             </main>
