@@ -114,7 +114,7 @@ export default function ArticlesAndCreate() {
                             />
                             <Input
                                 type="text"
-                                placeholder="URL de l'image"
+                                placeholder="URL de l'image/video"
                                 value={newImage}
                                 onChange={(e) => setNewImage(e.target.value)}
                                 required

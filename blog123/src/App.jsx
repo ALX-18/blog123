@@ -10,6 +10,7 @@ import Articles from "./components/articles";
 import Login from "./components/login";
 import ForgotPassword from "./components/ForgotPassword.jsx";
 import CreateAccount from "./components/CreateAccount.jsx";
+import {ArticleDetails} from "./components/articlesdetail.jsx";
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                     <Route path="/interview" element={<Interview />} />
                     <Route path="/sports" element={<Sports />} />
                     <Route path="/articles" element={<Articles />} />
+                    <Route path="/articles/:id" element={<ArticleDetails />} />
                     <Route path="/login"element={<Login />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/register" element={<CreateAccount />} />
