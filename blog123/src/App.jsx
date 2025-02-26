@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React from 'react';
 import './index.css';
 import CreateArticle from "./components/CreateArticle.jsx";
+import CreateArticles from "./components/CreateArticles.jsx";
 import Interview from "./components/interview";
 import Sports from "./components/sports";
 import Articles from "./components/articles";
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/login"element={<Login />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/register" element={<CreateAccount />} />
+                    <Route path="/create" element={<CreateArticles/>} />
                 </Routes>
             </div>
         </Router>
