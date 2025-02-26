@@ -119,7 +119,7 @@ export function ArticleDetails() {
                             ></iframe>
                         ) : (
                             <img
-                                src={article.img || "https://via.placeholder.com/800x400"}
+                                src={article.image || "https://via.placeholder.com/800x400"}
                                 alt={article.title || "Image"}
                                 className="w-full h-auto rounded-lg shadow-lg mb-6"
                             />
