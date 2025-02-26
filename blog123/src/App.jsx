@@ -12,6 +12,7 @@ import Login from "./components/login";
 import ForgotPassword from "./components/ForgotPassword.jsx";
 import CreateAccount from "./components/CreateAccount.jsx";
 import {ArticleDetails} from "./components/articlesdetail.jsx";
+import About from "./components/about.jsx";
 
 function App() {
     return (
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/register" element={<CreateAccount />} />
                     <Route path="/create" element={<CreateArticles/>} />
+                    <Route path="/about" element={<About/>} />
                 </Routes>
             </div>
         </Router>
