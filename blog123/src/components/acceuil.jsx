@@ -151,7 +151,7 @@ export default function Acceuil() {
                         </div>
                     </div>
                 </section>
-
+                          
                 {/* Featured Article */}
                 <section className="w-full py-12 bg-white">
                     <div className="container px-4 md:px-6">
@@ -165,13 +165,6 @@ export default function Acceuil() {
                                     <Button className="bg-white text-[#E03C31] hover:bg-[#F6C54A] hover:text-[#E03C31] w-fit">
                                         Lire l'article complet
                                     </Button>
-                                </div>
-                                <div className="flex items-center justify-center">
-                                    <img 
-                                        src="/placeholder.svg?height=300&width=400" 
-                                        alt="Jeux Olympiques" 
-                                        className="rounded-lg shadow-lg max-w-full h-auto"
-                                    />
                                 </div>
                             </div>
                         </div>
