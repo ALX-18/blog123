@@ -3,9 +3,9 @@ import { Button } from "./ui/button.jsx";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card.jsx";
 import React from "react";
 import { ArrowRight } from "lucide-react";
-import leaMartin from "../assets/images/lea-martin.png"
-import thomasDubois from "../assets/images/thomas-dubois.png";
-import sophieLeroux from "../assets/images/sophie-leroux.png";
+import leaMartin from "../assets/images/Accueil/lea-martin.png"
+import thomasDubois from "../assets/images/Accueil/thomas-dubois.png";
+import sophieLeroux from "../assets/images/Accueil/sophie-leroux.png";
 
 
 export default function Interview() {
