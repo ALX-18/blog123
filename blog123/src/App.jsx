@@ -13,7 +13,6 @@ import ForgotPassword from "./components/ForgotPassword.jsx";
 import CreateAccount from "./components/CreateAccount.jsx";
 import {ArticleDetails} from "./components/articlesdetail.jsx";
 import About from "./components/about.jsx";
-import Register from "./components/register.jsx";
 
 function App() {
     return (
