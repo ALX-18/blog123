@@ -16,7 +16,7 @@ export default function Acceuil() {
             <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/90">
                 <div className="container flex h-16 items-center justify-between">
                     <Link to="/" className="flex items-center space-x-2">
-                        <span className="text-2xl font-bold text-[#E03C31]">BLOG123</span>
+                     <img src= "..\assets\images\blog123.svg" alt="Logo" className="h-8" />
                     </Link>
                     <nav className="hidden md:flex space-x-6 text-sm font-medium">
                         <Link to="/Interview" className="transition-colors hover:text-[#E03C31]">Interviews</Link>
