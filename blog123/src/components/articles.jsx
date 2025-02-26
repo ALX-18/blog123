@@ -20,23 +20,29 @@ export default function ArticlesAndCreate() {
     const [newTitle, setNewTitle] = useState("");
     const [newDescription, setNewDescription] = useState("");
     const [newImage, setNewImage] = useState("");
+    const [newContent, setNewContent] = useState(""); // ✅ Ajout d'un champ "contenu"
 
     const handleCreateArticle = async (e) => {
         e.preventDefault();
 
         try {
-            // Ajouter un nouvel article dans la base de données Firestore
             await addDoc(collection(db, "articles"), {
                 title: newTitle,
                 description: newDescription,
-                image: newImage,
-                createdAt: serverTimestamp(),
+                content: newContent, //
+                img: newImage, //
+                author: "", //
+                categorie: "", //
+                statut: "", //
+                tags: "", //
+                createdAt: serverTimestamp(), //
             });
 
             alert("Article créé avec succès !");
             setNewTitle("");
             setNewDescription("");
             setNewImage("");
+            setNewContent("");
         } catch (error) {
             console.error("Erreur lors de la création de l'article :", error);
             alert("Une erreur est survenue. Veuillez réessayer.");
@@ -120,11 +126,19 @@ export default function ArticlesAndCreate() {
                                 required
                             />
                             <textarea
-                                placeholder="Description de l'article"
+                                placeholder="Brève description de l'article"
                                 value={newDescription}
                                 onChange={(e) => setNewDescription(e.target.value)}
                                 className="w-full p-3 border border-gray-300 rounded-lg shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#E03C31]"
-                                rows="5"
+                                rows="3"
+                                required
+                            ></textarea>
+                            <textarea
+                                placeholder="Contenu détaillé de l'article"
+                                value={newContent}
+                                onChange={(e) => setNewContent(e.target.value)}
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#E03C31]"
+                                rows="6"
                                 required
                             ></textarea>
                             <Button
@@ -137,25 +151,6 @@ export default function ArticlesAndCreate() {
                     </div>
                 </section>
             </main>
-
-            <footer className="w-full border-t py-6 md:py-0">
-                <div className="container flex flex-col gap-4 md:h-24 md:flex-row md:items-center">
-                    <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-                        © 2024 BLOG123. Tous droits réservés.
-                    </p>
-                    <nav className="flex items-center justify-center gap-4 md:ml-auto md:gap-6 md:justify-end">
-                        <Link to="/privacy" className="text-sm text-muted-foreground hover:text-[#E03C31]">
-                            Politique de confidentialité
-                        </Link>
-                        <Link to="/terms" className="text-sm text-muted-foreground hover:text-[#E03C31]">
-                            Conditions d'utilisation
-                        </Link>
-                        <Link to="/contact" className="text-sm text-muted-foreground hover:text-[#E03C31]">
-                            Contact
-                        </Link>
-                    </nav>
-                </div>
-            </footer>
         </div>
     );
 }
