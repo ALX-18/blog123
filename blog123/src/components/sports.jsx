@@ -51,8 +51,8 @@ export default function Sports() {
                     <nav className="flex space-x-6 text-sm font-medium">
                         <Link to="/interview" className="hover:text-[#E03C31]">Interviews</Link>
                         <Link to="/articles" className="hover:text-[#E03C31]">Articles</Link>
-                        <Link to="/sports" className="hover:text-[#E03C31]">Sportif</Link>
-                        <Link to="/about" className="hover:text-[#E03C31]">À propos de</Link>
+                        <Link to="/sports" className="hover:text-[#E03C31]">Sports</Link>
+                        <Link to="/about" className="hover:text-[#E03C31]">À propos</Link>
                     </nav>
                     <Link to="/rapport" className="rounded bg-[#E03C31] px-4 py-2 text-white hover:bg-[#c0352b]">
                         Rapport
