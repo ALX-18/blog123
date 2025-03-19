@@ -133,45 +133,6 @@ export default function ArticlesPage() {
             </div>
           </div>
         </section>
-
-        <section className="w-full py-12 md:py-24 bg-white">
-          <div className="container px-4 md:px-6">
-            <h2 className="text-3xl font-bold tracking-tighter mb-8">Créer un Nouvel Article</h2>
-            <form className="max-w-2xl mx-auto space-y-6" onSubmit={handleCreateArticle}>
-              <div className="space-y-2">
-                <Input
-                  type="text"
-                  placeholder="Titre de l'article"
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  className="w-full"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Input
-                  type="text"
-                  placeholder="URL de l'image"
-                  value={newImage}
-                  onChange={(e) => setNewImage(e.target.value)}
-                  className="w-full"
-                />
-              </div>
-              <div className="space-y-2">
-                <textarea
-                  placeholder="Description de l'article"
-                  value={newDescription}
-                  onChange={(e) => setNewDescription(e.target.value)}
-                  className="w-full p-3 border rounded-lg shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#E03C31] min-h-[150px]"
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31]">
-                Créer l'article
-              </Button>
-            </form>
-          </div>
-        </section>
       </main>
 
       <footer className="w-full border-t py-6 bg-white">
