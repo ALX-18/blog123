@@ -49,7 +49,7 @@ export default function Sports() {
                         BLOG123
                     </Link>
                     <nav className="flex space-x-6 text-sm font-medium">
-                        <Link to="/interview" className="hover:text-[#E03C31]">Interviews</Link>
+                            <Link to="/interview" className="hover:text-[#E03C31]">Interviews</Link>
                         <Link to="/articles" className="hover:text-[#E03C31]">Articles</Link>
                         <Link to="/sports" className="hover:text-[#E03C31]">Sports</Link>
                         <Link to="/about" className="hover:text-[#E03C31]">À propos</Link>

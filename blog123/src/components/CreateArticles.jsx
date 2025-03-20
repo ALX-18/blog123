@@ -12,8 +12,10 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore"
 export default function CreateArticle() {
   const navigate = useNavigate()
   const [title, setTitle] = useState("")
+  const [description, setDescription] = useState("");
   const [content, setContent] = useState("")
   const [imageUrl, setImageUrl] = useState("")
+  const [tags, setTags] = useState([]);
   const [isUploading, setIsUploading] = useState(false)
 
   const handleCreateArticle = async (e) => {
@@ -163,6 +165,35 @@ export default function CreateArticle() {
                   required
                 />
               </div>
+              <div className="">
+                <textarea
+                  placeholder="Ajouter une description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full min-h-[100px] p-4 text-base border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E03C31] resize-none"
+                  required
+                />
+              </div>
+              <div className="">
+  <select
+    value={tags}
+    onChange={(e) => setTags(e.target.value)}
+    className="w-full p-4 text-base border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E03C31]"
+    required
+  >
+    <option value="">Sélectionnez un sport</option>
+    <option value="Football">Football</option>
+    <option value="Basketball">Basketball</option>
+    <option value="Tennis">Tennis</option>
+    <option value="Rugby">Rugby</option>
+    <option value="Baseball">Baseball</option>
+    <option value="Hockey">Hockey</option>
+    <option value="Golf">Golf</option>
+    {/* mettre d'autre sport */}
+  </select>
+</div>
+
+              
 
               {/* Boutons d'action */}
               <div className="flex justify-end gap-4">
