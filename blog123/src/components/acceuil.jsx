@@ -2,36 +2,53 @@ import { Link } from "react-router-dom"; // React Router
 import { Button } from "./ui/button.jsx";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card.jsx";
 import { Input } from "./ui/input.jsx";
-import React from "react";
-import { Search, ArrowRight, Trophy, Calendar, Star, TrendingUp, Users, Bookmark } from 'lucide-react';
-import leaMartin from "../assets/images/Accueil/lea-martin.png"
+import React, { useEffect, useState } from "react";
+import { Search, ArrowRight, Trophy, Calendar, Star, TrendingUp, Users, Bookmark, User } from 'lucide-react';
+
+// Image imports
+import leaMartin from "../assets/images/Accueil/lea-martin.png";
 import thomasDubois from "../assets/images/Accueil/thomas-dubois.png";
 import sophieLeroux from "../assets/images/Accueil/sophie-leroux.png";
 import Logo from "../assets/images/blog123.svg";
+import olympicsImage from "../assets/images/Accueil/olympics.png";
 
 export default function Acceuil() {
-    const isLoggedIn = false; // Simule l'état de connexion de l'utilisateur
+    // Authentication state management
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    
+    useEffect(() => {
+        // Check for authentication token in localStorage or sessionStorage
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        setIsLoggedIn(!!token);
+        
+        // You could also implement a more robust check with your auth service
+        // Example: authService.isAuthenticated().then(status => setIsLoggedIn(status));
+    }, []);
 
     return (
         <div className="flex min-h-screen flex-col bg-[#f8f9fa]">
+            {/* Modernized Header - Reduced height */}
             <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/90">
-                <div className="container flex h-28 items-center justify-between">
+                <div className="container flex h-16 items-center justify-between">
                     <Link to="/" className="flex items-center space-x-2">
-                    <img src={Logo} alt="Logo" className="h-28 w-auto" />
+                        <img src={Logo || "/placeholder.svg"} alt="Logo" className="h-12 w-auto" />
                     </Link>
                     <nav className="hidden md:flex space-x-6 text-sm font-medium">
-                        <Link to="/Interview" className="transition-colors hover:text-[#E03C31]">Interviews</Link>
-                        <Link to="/articles" className="transition-colors hover:text-[#E03C31]">Articles</Link>
-                        <Link to="/sports" className="transition-colors hover:text-[#E03C31]">Sports</Link>
-                        <Link to="/about" className="transition-colors hover:text-[#E03C31]">À propos</Link>
+                        <Link to="/Interview" className="transition-colors hover:text-[#E03C31] rounded-md px-3 py-2 hover:bg-[#E03C31]/5">Interviews</Link>
+                        <Link to="/articles" className="transition-colors hover:text-[#E03C31] rounded-md px-3 py-2 hover:bg-[#E03C31]/5">Articles</Link>
+                        <Link to="/sports" className="transition-colors hover:text-[#E03C31] rounded-md px-3 py-2 hover:bg-[#E03C31]/5">Sports</Link>
+                        <Link to="/about" className="transition-colors hover:text-[#E03C31] rounded-md px-3 py-2 hover:bg-[#E03C31]/5">À propos</Link>
                     </nav>
                     {isLoggedIn ? (
-                        <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31]">
-                            S'abonner
-                        </Button>
+                        <Link to="/profile">
+                            <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31] rounded-full">
+                                <User className="h-4 w-4 mr-2" />
+                                Profil
+                            </Button>
+                        </Link>
                     ) : (
                         <Link to="/login">
-                            <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31]">
+                            <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31] rounded-full">
                                 Connexion
                             </Button>
                         </Link>
@@ -58,13 +75,13 @@ export default function Acceuil() {
                             <div className="w-full max-w-md space-y-2">
                                 <form className="flex space-x-2">
                                     <Input 
-                                        className="flex-1 shadow-sm border-2 focus:border-[#E03C31]" 
+                                        className="flex-1 shadow-sm border-2 focus:border-[#E03C31] rounded-full" 
                                         placeholder="Rechercher un athlète, un sport..." 
                                         type="search" 
                                     />
                                     <Button 
                                         type="submit" 
-                                        className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31] shadow-md"
+                                        className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31] shadow-md rounded-full"
                                     >
                                         <Search className="h-4 w-4" />
                                         <span className="sr-only">Rechercher</span>
@@ -80,19 +97,19 @@ export default function Acceuil() {
                 <section className="w-full py-12 bg-white">
                     <div className="container px-4 md:px-6">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div className="flex flex-col items-center p-4 text-center rounded-lg bg-[#f8f9fa] hover:bg-[#E03C31]/5 transition-colors">
+                            <div className="flex flex-col items-center p-4 text-center rounded-xl bg-[#f8f9fa] hover:bg-[#E03C31]/5 transition-colors shadow-sm hover:shadow">
                                 <Trophy className="h-8 w-8 text-[#E03C31] mb-2" />
                                 <h3 className="font-medium">Football</h3>
                             </div>
-                            <div className="flex flex-col items-center p-4 text-center rounded-lg bg-[#f8f9fa] hover:bg-[#E03C31]/5 transition-colors">
+                            <div className="flex flex-col items-center p-4 text-center rounded-xl bg-[#f8f9fa] hover:bg-[#E03C31]/5 transition-colors shadow-sm hover:shadow">
                                 <Users className="h-8 w-8 text-[#E03C31] mb-2" />
                                 <h3 className="font-medium">Rugby</h3>
                             </div>
-                            <div className="flex flex-col items-center p-4 text-center rounded-lg bg-[#f8f9fa] hover:bg-[#E03C31]/5 transition-colors">
+                            <div className="flex flex-col items-center p-4 text-center rounded-xl bg-[#f8f9fa] hover:bg-[#E03C31]/5 transition-colors shadow-sm hover:shadow">
                                 <TrendingUp className="h-8 w-8 text-[#E03C31] mb-2" />
                                 <h3 className="font-medium">Tennis</h3>
                             </div>
-                            <div className="flex flex-col items-center p-4 text-center rounded-lg bg-[#f8f9fa] hover:bg-[#E03C31]/5 transition-colors">
+                            <div className="flex flex-col items-center p-4 text-center rounded-xl bg-[#f8f9fa] hover:bg-[#E03C31]/5 transition-colors shadow-sm hover:shadow">
                                 <Star className="h-8 w-8 text-[#E03C31] mb-2" />
                                 <h3 className="font-medium">Natation</h3>
                             </div>
@@ -105,7 +122,7 @@ export default function Acceuil() {
                     <div className="container px-4 md:px-6">
                         <div className="flex items-center justify-between mb-8">
                             <h2 className="text-3xl font-bold tracking-tighter">Dernières Interviews</h2>
-                            <Link to="/interviews" className="text-[#E03C31] hover:text-[#F6C54A] font-medium flex items-center">
+                            <Link to="/interviews" className="text-[#E03C31] hover:text-[#F6C54A] font-medium flex items-center rounded-full px-4 py-1 hover:bg-[#E03C31]/5 transition-colors">
                                 Voir toutes <ArrowRight className="ml-1 h-4 w-4" />
                             </Link>
                         </div>
@@ -115,14 +132,14 @@ export default function Acceuil() {
                                 { name: "Thomas Dubois", sport: "Football", image: thomasDubois, quote: "Chaque match est une nouvelle opportunité." },
                                 { name: "Sophie Leroux", sport: "Natation", image: sophieLeroux, quote: "La discipline est la clé du succès." },
                             ].map((interview, index) => (
-                                <Card key={index} className="overflow-hidden group hover:shadow-lg transition-shadow border-0 shadow-sm">
+                                <Card key={index} className="overflow-hidden group hover:shadow-lg transition-shadow border-0 shadow-sm rounded-xl">
                                     <div className="relative">
                                         <img
                                             src={interview.image || "/placeholder.svg"}
                                             alt={interview.name}
-                                            className="w-full h-56 object-cover transition-transform group-hover:scale-105"
+                                            className="w-full h-56 object-cover transition-transform group-hover:scale-105 rounded-t-xl"
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end rounded-t-xl">
                                             <p className="text-white p-4 text-sm italic">"{interview.quote}"</p>
                                         </div>
                                     </div>
@@ -139,7 +156,7 @@ export default function Acceuil() {
                                             <Link to="/interviews">
                                                 <Button
                                                     variant="link"
-                                                    className="p-0 h-auto font-semibold text-[#E03C31] hover:text-[#F6C54A]"
+                                                    className="p-0 h-auto font-semibold text-[#E03C31] hover:text-[#F6C54A] rounded-full"
                                                 >
                                                     Lire l'interview
                                                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -156,22 +173,22 @@ export default function Acceuil() {
                 {/* Featured Article */}
                 <section className="w-full py-12 bg-white">
                     <div className="container px-4 md:px-6">
-                        <div className="relative overflow-hidden rounded-xl bg-[#E03C31]">
+                        <div className="relative overflow-hidden rounded-2xl bg-[#E03C31]">
                             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIgMS44LTQgNC00czQgMS44IDQgNC0xLjggNC00IDQtNC0xLjgtNC00eiIvPjwvZz48L2c+PC9zdmc+')] opacity-20"></div>
                             <div className="grid md:grid-cols-2 gap-6 p-6 md:p-10">
                                 <div className="flex flex-col justify-center text-white space-y-4">
                                     <span className="inline-block bg-white/20 px-3 py-1 rounded-full text-sm font-medium">À la une</span>
                                     <h2 className="text-2xl md:text-3xl font-bold">Les Jeux Olympiques et l'héritage pour le sport régional</h2>
                                     <p className="text-white/80">Comment les JO de Paris 2024 vont influencer le développement du sport en Occitanie ?</p>
-                                    <Button className="bg-white text-[#E03C31] hover:bg-[#F6C54A] hover:text-[#E03C31] w-fit">
+                                    <Button className="bg-white text-[#E03C31] hover:bg-[#F6C54A] hover:text-[#E03C31] w-fit rounded-full">
                                         Lire l'article complet
                                     </Button>
                                 </div>
                                 <div className="flex items-center justify-center">
                                     <img 
-                                        src="/placeholder.svg?height=300&width=400" 
+                                        src={olympicsImage || "/placeholder.svg"} 
                                         alt="Jeux Olympiques" 
-                                        className="rounded-lg shadow-lg max-w-full h-auto"
+                                        className="rounded-xl shadow-lg max-w-full h-auto"
                                     />
                                 </div>
                             </div>
@@ -184,7 +201,7 @@ export default function Acceuil() {
                     <div className="container px-4 md:px-6">
                         <div className="flex items-center justify-between mb-8">
                             <h2 className="text-3xl font-bold tracking-tighter">Articles Récents</h2>
-                            <Link to="/articles" className="text-[#E03C31] hover:text-[#F6C54A] font-medium flex items-center">
+                            <Link to="/articles" className="text-[#E03C31] hover:text-[#F6C54A] font-medium flex items-center rounded-full px-4 py-1 hover:bg-[#E03C31]/5 transition-colors">
                                 Tous les articles <ArrowRight className="ml-1 h-4 w-4" />
                             </Link>
                         </div>
@@ -209,7 +226,7 @@ export default function Acceuil() {
                                     icon: <Calendar className="h-5 w-5" />
                                 },
                             ].map((article, index) => (
-                                <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow border-0 shadow-sm">
+                                <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow border-0 shadow-sm rounded-xl">
                                     <CardHeader className="pb-2 border-b">
                                         <div className="flex items-center gap-2 mb-2">
                                             <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#E03C31]/10 text-[#E03C31]">
@@ -240,20 +257,20 @@ export default function Acceuil() {
                 {/* Newsletter Section */}
                 <section className="w-full py-12 bg-white">
                     <div className="container px-4 md:px-6">
-                        <div className="rounded-xl bg-gradient-to-r from-[#E03C31] to-[#F6C54A] p-6 md:p-10 shadow-lg">
+                        <div className="rounded-2xl bg-gradient-to-r from-[#E03C31] to-[#F6C54A] p-6 md:p-10 shadow-lg">
                             <div className="grid md:grid-cols-2 gap-6 items-center">
                                 <div className="space-y-4">
                                     <h2 className="text-2xl md:text-3xl font-bold text-white">Restez informé</h2>
                                     <p className="text-white/90">Recevez nos dernières interviews et articles directement dans votre boîte mail.</p>
                                 </div>
-                                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
                                     <form className="flex flex-col sm:flex-row gap-3">
                                         <Input 
-                                            className="flex-1 bg-white/80 border-0 placeholder:text-gray-500" 
+                                            className="flex-1 bg-white/80 border-0 placeholder:text-gray-500 rounded-full" 
                                             placeholder="Votre adresse email" 
                                             type="email" 
                                         />
-                                        <Button className="bg-white text-[#E03C31] hover:bg-[#F6C54A] hover:text-[#E03C31]">
+                                        <Button className="bg-white text-[#E03C31] hover:bg-[#F6C54A] hover:text-[#E03C31] rounded-full">
                                             S'abonner
                                         </Button>
                                     </form>
@@ -272,7 +289,7 @@ export default function Acceuil() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div>
                             <Link to="/" className="flex items-center space-x-2 mb-4">
-                                <span className="text-xl font-bold text-[#E03C31]">BLOG123</span>
+                                <img src={Logo || "/placeholder.svg"} alt="Logo" className="h-8 w-auto" />
                             </Link>
                             <p className="text-sm text-muted-foreground">
                                 Le blog de référence pour suivre l'actualité sportive en Occitanie et au-delà.
