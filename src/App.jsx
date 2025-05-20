@@ -1,14 +1,14 @@
-import { Auth } from "./components/auth";
-import Acceuil from "./components/acceuil"; 
+import { Auth } from "./components/auth.jsx";
+import Acceuil from "./components/acceuil.jsx"; 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React from 'react';
 import './index.css';
 import CreateArticle from "./components/CreateArticle.jsx";
 import CreateArticles from "./components/CreateArticles.jsx";
-import Interview from "./components/interview";
-import Sports from "./components/sports";
-import Articles from "./components/articles";
-import Login from "./components/login";
+import Interview from "./components/interview.jsx";
+import Sports from "./components/sports.jsx";
+import Articles from "./components/articles.jsx";
+import Login from "./components/login.jsx";
 import ForgotPassword from "./components/ForgotPassword.jsx";
 import CreateAccount from "./components/CreateAccount.jsx";
 import {ArticleDetails} from "./components/articlesdetail.jsx";
@@ -19,6 +19,7 @@ function App() {
         <Router>
             <div className="App">
                 <Routes>
+
                     <Route path="/auth" element={<Auth />} />
                     <Route path="/" element={<Acceuil />} />
                     <Route path="/interview" element={<Interview />} />
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/articles" element={<Articles />} />
                     <Route path="/articles/:id" element={<ArticleDetails />} />
                     <Route path="/login"element={<Login />} />
+
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/register" element={<CreateAccount />} />
                     <Route path="/create" element={<CreateArticles/>} />

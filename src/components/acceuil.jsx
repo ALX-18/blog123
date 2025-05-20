@@ -15,15 +15,23 @@ import olympicsImage from "../assets/images/Accueil/olympics.png";
 export default function Acceuil() {
     // Authentication state management
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    
-    useEffect(() => {
-        // Check for authentication token in localStorage or sessionStorage
+    const checkAuth = () => {
         const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
         setIsLoggedIn(!!token);
-        
-        // You could also implement a more robust check with your auth service
-        // Example: authService.isAuthenticated().then(status => setIsLoggedIn(status));
+    };
+
+    useEffect(() => {
+        checkAuth(); // Vérifie dès le montage
+
+        // Écoute l’événement personnalisé "authChanged"
+        window.addEventListener('authChanged', checkAuth);
+
+        // Nettoyage
+        return () => {
+            window.removeEventListener('authChanged', checkAuth);
+        };
     }, []);
+
 
     return (
         <div className="flex min-h-screen flex-col bg-[#f8f9fa]">
