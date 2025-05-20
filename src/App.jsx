@@ -19,6 +19,7 @@ function App() {
         <Router>
             <div className="App">
                 <Routes>
+
                     <Route path="/auth" element={<Auth />} />
                     <Route path="/" element={<Acceuil />} />
                     <Route path="/interview" element={<Interview />} />
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/articles" element={<Articles />} />
                     <Route path="/articles/:id" element={<ArticleDetails />} />
                     <Route path="/login"element={<Login />} />
+
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/register" element={<CreateAccount />} />
                     <Route path="/create" element={<CreateArticles/>} />

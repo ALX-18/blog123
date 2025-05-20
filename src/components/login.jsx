@@ -20,6 +20,9 @@ export default function Login() {
         try {
             const auth = getAuth();
             await signInWithEmailAndPassword(auth, email, password);
+            localStorage.setItem('authToken', "true"); // ou utilise un vrai token si tu en as un
+            window.dispatchEvent(new Event('authChanged')); // pour mettre à jour le bouton
+            console.log("Connexion réussie");
             navigate("/"); // Redirect to home page after successful login
         } catch (err) {
             setError("Email ou mot de passe incorrect");
