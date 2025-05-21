@@ -114,7 +114,7 @@ export default function ArticlesPage() {
                     <CardTitle className="line-clamp-2">{article.title}</CardTitle>
                   </CardHeader>
                   <CardContent className="pt-4">
-                    <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{article.description}</p>
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{article.content}</p>
                     <div className="flex justify-between items-center">
                       <Link to={`/articles/${article.id}`}>
                         <Button variant="link" className="p-0 h-auto font-semibold text-[#E03C31] hover:text-[#F6C54A]">
