@@ -1,14 +1,20 @@
 import { Link } from "react-router-dom"; // React Router
 import { Button } from "./ui/button.jsx";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card.jsx";
-import React from "react";
-import { ArrowRight } from "lucide-react";
+import React, {useEffect, useState} from "react";
+import {ArrowRight, User} from "lucide-react";
 import leaMartin from "../assets/images/Accueil/lea-martin.png"
 import thomasDubois from "../assets/images/Accueil/thomas-dubois.png";
 import sophieLeroux from "../assets/images/Accueil/sophie-leroux.png";
 
 
 export default function Interview() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+        setIsLoggedIn(!!token);
+    }, []);
     return (
         <div className="flex min-h-screen flex-col">
             <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -22,9 +28,19 @@ export default function Interview() {
                         <Link to="/sports" className="transition-colors hover:text-[#E03C31]">Sports</Link>
                         <Link to="/about" className="transition-colors hover:text-[#E03C31]">À propos</Link>
                     </nav>
-                    <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31]">
-                        S'abonner
-                    </Button>
+                    {isLoggedIn ? (
+                        <Link to="/profile">
+                            <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31] rounded-full">
+                                <User className="h-4 w-4 mr-2" /> Profil
+                            </Button>
+                        </Link>
+                    ) : (
+                        <Link to="/login">
+                            <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31] rounded-full">
+                                Connexion
+                            </Button>
+                        </Link>
+                    )}
                 </div>
             </header>
 

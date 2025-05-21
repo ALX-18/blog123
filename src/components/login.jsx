@@ -4,6 +4,13 @@ import { Input } from "./ui/input";
 import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Mail, Lock } from 'lucide-react';
+import { auth, googleProvider, facebookProvider } from "../config/firebase";
+import { signInWithPopup } from "firebase/auth";
+import { collection, query, where, getDocs, addDoc, serverTimestamp } from "firebase/firestore"
+import { db } from "../config/firebase"
+
+
+
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -29,6 +36,69 @@ export default function Login() {
             console.error("Erreur de connexion:", err);
         } finally {
             setIsLoading(false);
+        }
+    };
+    const handleGoogleLogin = async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const user = result.user;
+
+            // Vérifie si l'utilisateur existe déjà dans Firestore
+            const q = query(collection(db, "users"), where("uid", "==", user.uid));
+            const snapshot = await getDocs(q);
+
+            if (snapshot.empty) {
+                // Crée un nouvel utilisateur
+                await addDoc(collection(db, "users"), {
+                    uid: user.uid,
+                    email: user.email,
+                    username: user.displayName || "Utilisateur",
+                    url: user.photoURL || "/placeholder-avatar.png",
+                    isrole: "reader",
+                    createdAt: serverTimestamp()
+                });
+                console.log("👤 Nouvel utilisateur enregistré !");
+            }
+
+            localStorage.setItem('authToken', "true");
+            window.dispatchEvent(new Event('authChanged'));
+            navigate("/");
+        } catch (error) {
+            console.error("Erreur Google :", error);
+            setError("Erreur lors de la connexion avec Google.");
+        }
+    }
+
+    const handleFacebookLogin = async () => {
+        try {
+            facebookProvider.addScope('email');
+
+            const result = await signInWithPopup(auth, facebookProvider);
+            const user = result.user;
+
+            // Vérifie si l'utilisateur existe déjà dans Firestore
+            const q = query(collection(db, "users"), where("uid", "==", user.uid));
+            const snapshot = await getDocs(q);
+
+            if (snapshot.empty) {
+                // Crée un nouvel utilisateur Firestore
+                await addDoc(collection(db, "users"), {
+                    uid: user.uid,
+                    email: user.email,
+                    username: user.displayName || "Utilisateur Facebook",
+                    url: user.photoURL || "/placeholder-avatar.png",
+                    isrole: "reader", // Rôle par défaut
+                    createdAt: serverTimestamp()
+                });
+                console.log("👤 Nouvel utilisateur Facebook enregistré !");
+            }
+
+            localStorage.setItem('authToken', "true");
+            window.dispatchEvent(new Event('authChanged'));
+            navigate("/");
+        } catch (error) {
+            console.error("Erreur Facebook :", error);
+            setError("Erreur lors de la connexion avec Facebook.");
         }
     };
 
@@ -133,12 +203,24 @@ export default function Login() {
                             >
                                 {isLoading ? "Connexion..." : "Se connecter"}
                             </Button>
+                            <div className="flex flex-col space-y-3">
+                                <Button
+                                    type="button"
+                                    onClick={handleGoogleLogin}
+                                    className="w-full bg-white text-gray-800 border border-gray-300 hover:bg-gray-100"
+                                >
+                                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google"
+                                         className="w-5 h-5 mr-2"/>
+                                    Continuer avec Google
+                                </Button>
+
+                            </div>
 
                             <div className="text-center">
                                 <span className="text-sm text-gray-500">
                                     Pas encore de compte ?{" "}
-                                    <Link 
-                                        to="/register" 
+                                    <Link
+                                        to="/register"
                                         className="font-medium text-[#E03C31] hover:text-[#F6C54A]"
                                     >
                                         S'inscrire

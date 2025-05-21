@@ -16,9 +16,11 @@ import Profil from "./components/Profil.jsx";
 import AdminPanel from "./components/AdminPanel.jsx";
 import PrivateRouteAdmin from "./components/PrivateRouteAdmin";
 import EditArticle from "./components/EditArticle"
-
-
-
+import PrivateRouteCreate from "./components/PrivateRouteCreate"
+import SearchResults from "./components/SearchResults";
+import ArticlesByTag from "./components/ArticlesByTag";
+import CreateInterview from "./components/CreateInterview.jsx";
+import InterviewDetails from "./components/InterviewDetails.jsx";
 
 function App() {
     return (
@@ -41,9 +43,17 @@ function App() {
                     } />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/register" element={<CreateAccount />} />
-                    <Route path="/create" element={<CreateArticles/>} />
+                    <Route path="/create" element={
+                        <PrivateRouteCreate>
+                            <CreateArticles />
+                        </PrivateRouteCreate>
+                    } />
                     <Route path="/about" element={<About/>} />
                     <Route path="/articles/edit/:id" element={<EditArticle />} />
+                    <Route path="/recherche" element={<SearchResults />} />
+                    <Route path="/articles-by-tag" element={<ArticlesByTag />} />
+                    <Route path="/create-interview" element={<CreateInterview />} />
+                    <Route path="/interview/:id" element={<InterviewDetails />} />
                 </Routes>
             </div>
         </Router>

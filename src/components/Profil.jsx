@@ -1,91 +1,110 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "../config/firebase.jsx";
-import { Button } from "./ui/button";
-import { LogOut } from "lucide-react";
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { doc, updateDoc, collection, query, where, getDocs } from "firebase/firestore"
+import { db } from "../config/firebase.jsx"
+import { Button } from "./ui/button"
+import { LogOut, Home } from "lucide-react"
+import { documentId } from "firebase/firestore"
 
 // Avatars
-import avatar1 from "../assets/images/avatar/avatar1.png";
-import avatar2 from "../assets/images/avatar/avatar2.png";
-import avatar3 from "../assets/images/avatar/avatar3.png";
-import avatar4 from "../assets/images/avatar/avatar4.png";
-import avatar5 from "../assets/images/avatar/avatar5.png";
-import avatar6 from "../assets/images/avatar/avatar6.png";
+import avatar1 from "../assets/images/avatar/avatar1.png"
+import avatar2 from "../assets/images/avatar/avatar2.png"
+import avatar3 from "../assets/images/avatar/avatar3.png"
+import avatar4 from "../assets/images/avatar/avatar4.png"
+import avatar5 from "../assets/images/avatar/avatar5.png"
+import avatar6 from "../assets/images/avatar/avatar6.png"
 
-const avatarOptions = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6];
+const avatarOptions = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6]
 
 export default function Profil() {
-    const navigate = useNavigate();
-    const [userData, setUserData] = useState(null);
-    const [previewUrl, setPreviewUrl] = useState("");
+    const navigate = useNavigate()
+    const [userData, setUserData] = useState(null)
+    const [previewUrl, setPreviewUrl] = useState("")
 
     const handleAvatarSelect = async (selectedAvatarUrl) => {
-        const auth = getAuth();
-        const user = auth.currentUser;
-        if (!user) return;
+        const auth = getAuth()
+        const user = auth.currentUser
+        if (!user) return
 
         try {
-            const q = query(collection(db, "users"), where("uid", "==", user.uid));
-            const snapshot = await getDocs(q);
+            const q = query(collection(db, "users"), where("uid", "==", user.uid))
+            const snapshot = await getDocs(q)
 
             if (!snapshot.empty) {
-                const userDoc = snapshot.docs[0];
+                const userDoc = snapshot.docs[0]
                 await updateDoc(doc(db, "users", userDoc.id), {
                     url: selectedAvatarUrl,
-                });
-                console.log("✅ Avatar mis à jour :", selectedAvatarUrl);
-                setPreviewUrl(selectedAvatarUrl);
-                setUserData((prev) => ({ ...prev, url: selectedAvatarUrl }));
+                })
+                setPreviewUrl(selectedAvatarUrl)
+                setUserData((prev) => ({ ...prev, url: selectedAvatarUrl }))
             }
         } catch (error) {
-            console.error("❌ Erreur de mise à jour de l'avatar :", error);
+            console.error("❌ Erreur de mise à jour de l'avatar :", error)
         }
-    };
+    }
 
     useEffect(() => {
-        const auth = getAuth();
+        const auth = getAuth()
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (!user) {
-                console.warn("🔒 Utilisateur non connecté, redirection...");
-                navigate("/login");
-                return;
+                navigate("/login")
+                return
             }
 
             try {
-                const q = query(collection(db, "users"), where("uid", "==", user.uid));
-                const querySnapshot = await getDocs(q);
+                const q = query(collection(db, "users"), where("uid", "==", user.uid))
+                const querySnapshot = await getDocs(q)
 
                 if (!querySnapshot.empty) {
-                    const docData = querySnapshot.docs[0].data();
-                    setUserData(docData);
-                    setPreviewUrl(docData.url);
-                } else {
-                    console.error("Aucune donnée trouvée pour cet utilisateur.");
+                    const docData = querySnapshot.docs[0].data()
+                    setUserData(docData)
+                    setPreviewUrl(docData.url)
                 }
             } catch (error) {
-                console.error("Erreur lors de la récupération des données utilisateur :", error);
+                console.error("Erreur lors de la récupération des données utilisateur :", error)
             }
-        });
+        })
 
-        return () => unsubscribe();
-    }, [navigate]);
+        return () => unsubscribe()
+    }, [navigate])
 
     const handleLogout = () => {
-        localStorage.removeItem("authToken");
-        window.dispatchEvent(new Event("authChanged"));
-        navigate("/login");
-    };
+        localStorage.removeItem("authToken")
+        window.dispatchEvent(new Event("authChanged"))
+        navigate("/login")
+    }
+    const [bookmarkedArticles, setBookmarkedArticles] = useState([]);
 
+    useEffect(() => {
+        const fetchBookmarkedArticles = async () => {
+            if (userData?.bookmarkedArticles?.length > 0) {
+                const articlesQuery = query(
+                    collection(db, "articles"),
+                    where(documentId(), "in", userData.bookmarkedArticles)
+                );
+                const snapshot = await getDocs(articlesQuery);
+                const articles = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+                setBookmarkedArticles(articles);
+            }
+        };
+
+        fetchBookmarkedArticles();
+    }, [userData]);
     return (
         <div className="min-h-screen bg-[#f8f9fa] p-6">
             <div className="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-md space-y-6">
                 <div className="flex justify-between items-center">
                     <h2 className="text-2xl font-bold text-[#E03C31]">Mon Profil</h2>
-                    <Button variant="ghost" onClick={handleLogout} className="flex items-center gap-2 text-red-600">
-                        <LogOut className="w-4 h-4" /> Déconnexion
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        <Button variant="outline" onClick={() => navigate("/")}>
+                            <Home className="h-4 w-4 mr-1" />
+                            Accueil
+                        </Button>
+                        <Button variant="ghost" onClick={handleLogout} className="flex items-center gap-2 text-red-600">
+                            <LogOut className="w-4 h-4" /> Déconnexion
+                        </Button>
+                    </div>
                 </div>
 
                 {userData ? (
@@ -126,7 +145,6 @@ export default function Profil() {
                             </p>
                         </div>
 
-                        {/* Admin button */}
                         {userData.isrole === "admin" && (
                             <Button
                                 className="mt-4 w-full bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31]"
@@ -136,7 +154,6 @@ export default function Profil() {
                             </Button>
                         )}
 
-                        {/* Moderator button */}
                         {userData.isrole === "moderator" && (
                             <Button
                                 className="mt-4 w-full bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31]"
@@ -145,11 +162,52 @@ export default function Profil() {
                                 Voir les signalements 🛠️
                             </Button>
                         )}
+
+                        {userData.isrole === "redactor" && (
+                            <>
+                                <Button
+                                    className="mt-4 w-full bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31]"
+                                    onClick={() => navigate("/create")}
+                                >
+                                    ✍️ Écrire un article
+                                </Button>
+
+                                <Button
+                                    className="mt-2 w-full bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31]"
+                                    onClick={() => navigate("/create-interview")}
+                                >
+                                    ➕ Ajouter une interview
+                                </Button>
+                            </>
+                        )}
+                        {bookmarkedArticles.length > 0 && (
+                            <div className="mt-8">
+                                <h3 className="text-xl font-bold text-[#E03C31] mb-4">📚 Articles enregistrés</h3>
+                                <div className="grid gap-4">
+                                    {bookmarkedArticles.map((article) => (
+                                        <div key={article.id} className="p-4 bg-gray-50 rounded border">
+                                            <h4 className="text-lg font-semibold">{article.title}</h4>
+                                            <p className="text-sm text-gray-600 mb-2">
+                                                {article.description ? article.description.substring(0, 100) + "..." : "Pas de description."}
+                                            </p>
+                                            <Button
+                                                variant="link"
+                                                className="text-[#E03C31] font-medium"
+                                                onClick={() => navigate(`/articles/${article.id}`)}
+                                            >
+                                                Lire l'article
+                                            </Button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                     </div>
                 ) : (
                     <p className="text-gray-600 text-center">Chargement des informations...</p>
                 )}
             </div>
         </div>
-    );
+    )
 }

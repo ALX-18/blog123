@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card.jsx";
 import { Input } from "./ui/input.jsx";
 import React, { useEffect, useState } from "react";
 import { Search, ArrowRight, Trophy, Calendar, Star, TrendingUp, Users, Bookmark, User } from 'lucide-react';
-
+import { useNavigate } from "react-router-dom";
 // Image imports
 import leaMartin from "../assets/images/Accueil/lea-martin.png";
 import thomasDubois from "../assets/images/Accueil/thomas-dubois.png";
@@ -13,6 +13,9 @@ import Logo from "../assets/images/blog123.svg";
 import olympicsImage from "../assets/images/Accueil/olympics.png";
 
 export default function Acceuil() {
+
+    const navigate = useNavigate();
+    const [searchValue, setSearchValue] = useState("");
     // Authentication state management
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const checkAuth = () => {
@@ -81,32 +84,44 @@ export default function Acceuil() {
                                 Interviews exclusives, articles passionnants et histoires inspirantes de sportifs professionnels et espoirs.
                             </p>
                             <div className="w-full max-w-md space-y-2">
-                                <form className="flex space-x-2">
-                                    <Input 
-                                        className="flex-1 shadow-sm border-2 focus:border-[#E03C31] rounded-full" 
-                                        placeholder="Rechercher un athlète, un sport..." 
-                                        type="search" 
+                                <form
+                                    className="flex space-x-2"
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        if (searchValue.trim() !== "") {
+                                            navigate(`/recherche?q=${encodeURIComponent(searchValue.trim())}`);
+                                        }
+                                    }}
+                                >
+                                    <Input
+                                        className="flex-1 shadow-sm border-2 focus:border-[#E03C31] rounded-full pl-4"
+                                        placeholder="Rechercher un athlète, un sport..."
+                                        type="search"
+                                        value={searchValue}
+                                        onChange={(e) => setSearchValue(e.target.value)}
                                     />
-                                    <Button 
-                                        type="submit" 
+                                    <Button
+                                        type="submit"
                                         className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31] shadow-md rounded-full"
                                     >
-                                        <Search className="h-4 w-4" />
+                                        <Search className="h-4 w-4"/>
                                         <span className="sr-only">Rechercher</span>
                                     </Button>
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#f8f9fa] to-transparent"></div>
+                    <div
+                        className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#f8f9fa] to-transparent"></div>
                 </section>
 
                 {/* Featured Categories */}
                 <section className="w-full py-12 bg-white">
                     <div className="container px-4 md:px-6">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div className="flex flex-col items-center p-4 text-center rounded-xl bg-[#f8f9fa] hover:bg-[#E03C31]/5 transition-colors shadow-sm hover:shadow">
-                                <Trophy className="h-8 w-8 text-[#E03C31] mb-2" />
+                            <div
+                                className="flex flex-col items-center p-4 text-center rounded-xl bg-[#f8f9fa] hover:bg-[#E03C31]/5 transition-colors shadow-sm hover:shadow">
+                            <Trophy className="h-8 w-8 text-[#E03C31] mb-2" />
                                 <h3 className="font-medium">Football</h3>
                             </div>
                             <div className="flex flex-col items-center p-4 text-center rounded-xl bg-[#f8f9fa] hover:bg-[#E03C31]/5 transition-colors shadow-sm hover:shadow">
@@ -274,7 +289,7 @@ export default function Acceuil() {
                                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
                                     <form className="flex flex-col sm:flex-row gap-3">
                                         <Input 
-                                            className="flex-1 bg-white/80 border-0 placeholder:text-gray-500 rounded-full" 
+                                            className="flex-1 bg-white/80 border-0 placeholder:text-gray-500 rounded-full pl-4"
                                             placeholder="Votre adresse email" 
                                             type="email" 
                                         />
