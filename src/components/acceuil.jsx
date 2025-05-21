@@ -97,8 +97,10 @@ export default function Acceuil() {
         // Fetch recent interviews
         const fetchRecentInterviews = async () => {
             try {
-                const interviewsQuery = query(collection(db, "interviews"), orderBy("createdAt", "desc"), limit(3));
+                const interviewsQuery = query(collection(db, "interview"), orderBy("createdAt", "desc"), limit(3));
                 const querySnapshot = await getDocs(interviewsQuery);
+                console.log("Fetched interviews:", querySnapshot.docs); // 👈 debug ici
+
                 const interviewsData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
                 setRecentInterviews(interviewsData);
             } catch (error) {
@@ -201,6 +203,7 @@ export default function Acceuil() {
                                     className="flex flex-col items-center p-4 text-center rounded-xl bg-[#f8f9fa] hover:bg-[#E03C31]/5 transition-colors shadow-sm hover:shadow"
                                 >
                                     {sport.icon}
+
                                     <h3 className="font-medium">{sport.name}</h3>
                                 </Link>
                             ))}
@@ -209,62 +212,57 @@ export default function Acceuil() {
                 </section>
 
                 {/* Latest Interviews with Enhanced Cards */}
-                <section className="w-full py-12 md:py-24 bg-[#f8f9fa]">
+                <section className="w-full py-12 bg-white">
                     <div className="container px-4 md:px-6">
-                        <div className="flex items-center justify-between mb-8">
-                            <h2 className="text-3xl font-bold tracking-tighter">Dernières Interviews</h2>
-                            <Link to="/interview"
-                                  className="text-[#E03C31] hover:text-[#F6C54A] font-medium flex items-center rounded-full px-4 py-1 hover:bg-[#E03C31]/5 transition-colors">
-                                Voir toutes <ArrowRight className="ml-1 h-4 w-4"/>
-                            </Link>
-                        </div>
-                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                            {recentInterviews.length > 0 ? recentInterviews.map((interview, index) => (
-                                <Card key={interview.id}
-                                      className="overflow-hidden group hover:shadow-lg transition-shadow border-0 shadow-sm rounded-xl">
-                                    <div className="relative">
-                                        <img
-                                            src={interview.image || "/placeholder.svg"}
-                                            alt={interview.name || interview.title || "Interview"}
-                                            className="w-full h-56 object-cover transition-transform group-hover:scale-105 rounded-t-xl"
-                                        />
-                                        {interview.quote && (
-                                            <div
-                                                className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end rounded-t-xl">
-                                                <p className="text-white p-4 text-sm italic">"{interview.quote}"</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                    <CardHeader className="pb-2">
-                                        <CardTitle>{interview.name || interview.title}</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="flex justify-between items-center">
-                                            <p className="text-sm text-muted-foreground">
-                                                <span
-                                                    className="inline-block bg-[#E03C31]/10 text-[#E03C31] px-2 py-1 rounded-full text-xs font-medium">
-                                                    {interview.sport || interview.category || "Sport"}
-                                                </span>
-                                            </p>
-                                            <Link to={`/interview/${interview.id}`}>
-                                                <Button
-                                                    variant="link"
-                                                    className="p-0 h-auto font-semibold text-[#E03C31] hover:text-[#F6C54A] rounded-full"
+                        <div className="relative overflow-hidden rounded-2xl bg-[#E03C31]">
+                            <div
+                                className="absolute inset-0 bg-[url('data:image/svg+xml;base64,...')] opacity-20 z-0"></div>
+
+                            <div className="grid md:grid-cols-2 gap-6 p-6 md:p-10 relative z-10">
+                                {recentInterviews.length > 0 ? (
+                                    <>
+                                        <div className="flex flex-col justify-center text-white space-y-4">
+                                            <span
+                                                className="inline-block bg-white/20 px-3 py-1 rounded-full text-sm font-medium">Interview à la une</span>
+                                            <h2 className="text-2xl md:text-3xl font-bold">{recentInterviews[0].title}</h2>
+                                            <p className="text-white/80">{recentInterviews[0].quote || "Découvrez cette interview exclusive !"}</p>
+                                            <div className="flex items-center space-x-4">
+                                                <Link to={`/interview/${recentInterviews[0].id}`}>
+                                                    <Button
+                                                        type="button"
+                                                        className="bg-white text-[#E03C31] hover:bg-[#F6C54A] hover:text-[#E03C31] w-fit rounded-full"
+                                                    >
+                                                        Lire l'interview complète
+                                                    </Button>
+                                                </Link>
+                                                <Link
+                                                    to="/interview"
+                                                    className="text-white underline hover:text-[#F6C54A] text-sm"
                                                 >
-                                                    Lire l'interview
-                                                    <ArrowRight className="ml-2 h-4 w-4"/>
-                                                </Button>
-                                            </Link>
+                                                    Voir toutes
+                                                </Link>
+                                            </div>
                                         </div>
-                                    </CardContent>
-                                </Card>
-                            )) : (
-                                <div className="col-span-3 text-center text-muted-foreground">Aucune interview
-                                    récente</div>
-                            )}
+
+                                        <div className="flex items-center justify-center">
+                                            <img
+                                                src={recentInterviews[0].image || recentInterviews[0].urlphoto || "/placeholder.svg"}
+                                                alt={recentInterviews[0].title}
+                                                className="rounded-xl shadow-lg max-w-full h-auto"
+                                            />
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div
+                                        className="col-span-2 flex justify-center items-center min-h-[200px] text-white/80">
+                                        Aucune interview disponible
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </section>
+
 
                 {/* Featured Article */}
                 <section className="w-full py-12 bg-white">
@@ -272,7 +270,7 @@ export default function Acceuil() {
                         <div className="relative overflow-hidden rounded-2xl bg-[#E03C31]">
                             <div
                                 className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1zbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIgMS44LTQgNC00czQgMS44IDQgNC0xLjggNC00IDQtNC0xLjgtNC00eiIvPjwvZz48L2c+PC9zdmc+')] opacity-20"></div>
-                            <div className="grid md:grid-cols-2 gap-6 p-6 md:p-10">
+                            <div className="grid md:grid-cols-2 gap-6 p-6 md:p-10 relative z-10">
                                 {featuredArticle ? (
                                     <>
                                         <div className="flex flex-col justify-center text-white space-y-4">
@@ -408,10 +406,14 @@ export default function Acceuil() {
                         <div>
                             <h3 className="font-medium mb-4">Liens rapides</h3>
                             <nav className="flex flex-col space-y-2">
-                                <Link to="/interviews" className="text-sm text-muted-foreground hover:text-[#E03C31]">Interviews</Link>
-                                <Link to="/articles" className="text-sm text-muted-foreground hover:text-[#E03C31]">Articles</Link>
-                                <Link to="/sports" className="text-sm text-muted-foreground hover:text-[#E03C31]">Sports</Link>
-                                <Link to="/about" className="text-sm text-muted-foreground hover:text-[#E03C31]">À propos</Link>
+                                <Link to="/interviews"
+                                      className="text-sm text-muted-foreground hover:text-[#E03C31]">Interviews</Link>
+                                <Link to="/articles"
+                                      className="text-sm text-muted-foreground hover:text-[#E03C31]">Articles</Link>
+                                <Link to="/sports"
+                                      className="text-sm text-muted-foreground hover:text-[#E03C31]">Sports</Link>
+                                <Link to="/about" className="text-sm text-muted-foreground hover:text-[#E03C31]">À
+                                    propos</Link>
                             </nav>
                         </div>
                         <div>
