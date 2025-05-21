@@ -4,36 +4,43 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card.jsx";
 import { Input } from "./ui/input.jsx";
 import React, { useEffect, useState } from "react";
 import { Search, ArrowRight, Trophy, Calendar, Star, TrendingUp, Users, Bookmark, User } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
 import { db } from "../config/firebase";
-
 // Image imports
+import leaMartin from "../assets/images/Accueil/lea-martin.png";
+import thomasDubois from "../assets/images/Accueil/thomas-dubois.png";
+import sophieLeroux from "../assets/images/Accueil/sophie-leroux.png";
 import Logo from "../assets/images/blog123.svg";
-
+import olympicsImage from "../assets/images/Accueil/olympics.png";
+ 
 export default function Acceuil() {
+ 
+    const navigate = useNavigate();
+    const [searchValue, setSearchValue] = useState("");
     // Authentication state management
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const checkAuth = () => {
         const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
         setIsLoggedIn(!!token);
     };
-
+ 
     useEffect(() => {
         checkAuth(); // Vérifie dès le montage
-
+ 
         // Écoute l’événement personnalisé "authChanged"
         window.addEventListener('authChanged', checkAuth);
-
+ 
         // Nettoyage
         return () => {
             window.removeEventListener('authChanged', checkAuth);
         };
     }, []);
-
+ 
     const [featuredArticle, setFeaturedArticle] = useState(null);
     const [recentArticles, setRecentArticles] = useState([]);
     const [recentInterviews, setRecentInterviews] = useState([]);
-
+ 
     useEffect(() => {
         // Fetch latest article for "À la une"
         const fetchFeaturedArticle = async () => {
@@ -50,7 +57,7 @@ export default function Acceuil() {
         };
         fetchFeaturedArticle();
     }, []);
-
+ 
     useEffect(() => {
         // Fetch recent articles (except the featured one)
         const fetchRecentArticles = async () => {
@@ -58,7 +65,6 @@ export default function Acceuil() {
                 const articlesQuery = query(collection(db, "articles"), orderBy("createdAt", "desc"), limit(4));
                 const querySnapshot = await getDocs(articlesQuery);
                 const articlesData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-                // Remove the featured article if present
                 setRecentArticles(articlesData);
             } catch (error) {
                 console.error("Erreur lors de la récupération des articles récents:", error);
@@ -66,7 +72,7 @@ export default function Acceuil() {
         };
         fetchRecentArticles();
     }, []);
-
+ 
     useEffect(() => {
         // Fetch recent interviews
         const fetchRecentInterviews = async () => {
@@ -81,14 +87,13 @@ export default function Acceuil() {
         };
         fetchRecentInterviews();
     }, []);
-
-
+ 
     return (
         <div className="flex min-h-screen flex-col bg-[#f8f9fa]">
             {/* Modernized Header - Reduced height */}
             <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/90">
                 <div className="container flex h-16 items-center justify-between">
-                    <Link to="/" className="flex items-center space-x-2 overflow-visible">
+                    <Link to="/" className="flex items-center space-x-2">
                         <img src={Logo || "/placeholder.svg"} alt="Logo" className="h-24 w-auto max-h-24 -my-4" style={{maxHeight:'96px'}} />
                     </Link>
                     <nav className="hidden md:flex space-x-6 text-sm font-medium">
@@ -113,7 +118,7 @@ export default function Acceuil() {
                     )}
                 </div>
             </header>
-
+ 
             <main className="flex-1">
                 {/* Hero Section with Background Pattern */}
                 <section className="relative w-full py-16 md:py-24 lg:py-32 overflow-hidden">
@@ -131,32 +136,44 @@ export default function Acceuil() {
                                 Interviews exclusives, articles passionnants et histoires inspirantes de sportifs professionnels et espoirs.
                             </p>
                             <div className="w-full max-w-md space-y-2">
-                                <form className="flex space-x-2">
-                                    <Input 
-                                        className="flex-1 shadow-sm border-2 focus:border-[#E03C31] rounded-full" 
-                                        placeholder="Rechercher un athlète, un sport..." 
-                                        type="search" 
+                                <form
+                                    className="flex space-x-2"
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        if (searchValue.trim() !== "") {
+                                            navigate(`/recherche?q=${encodeURIComponent(searchValue.trim())}`);
+                                        }
+                                    }}
+                                >
+                                    <Input
+                                        className="flex-1 shadow-sm border-2 focus:border-[#E03C31] rounded-full pl-4"
+                                        placeholder="Rechercher un athlète, un sport..."
+                                        type="search"
+                                        value={searchValue}
+                                        onChange={(e) => setSearchValue(e.target.value)}
                                     />
-                                    <Button 
-                                        type="submit" 
+                                    <Button
+                                        type="submit"
                                         className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31] shadow-md rounded-full"
                                     >
-                                        <Search className="h-4 w-4" />
+                                        <Search className="h-4 w-4"/>
                                         <span className="sr-only">Rechercher</span>
                                     </Button>
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#f8f9fa] to-transparent"></div>
+                    <div
+                        className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#f8f9fa] to-transparent"></div>
                 </section>
-
+ 
                 {/* Featured Categories */}
                 <section className="w-full py-12 bg-white">
                     <div className="container px-4 md:px-6">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div className="flex flex-col items-center p-4 text-center rounded-xl bg-[#f8f9fa] hover:bg-[#E03C31]/5 transition-colors shadow-sm hover:shadow">
-                                <Trophy className="h-8 w-8 text-[#E03C31] mb-2" />
+                            <div
+                                className="flex flex-col items-center p-4 text-center rounded-xl bg-[#f8f9fa] hover:bg-[#E03C31]/5 transition-colors shadow-sm hover:shadow">
+                            <Trophy className="h-8 w-8 text-[#E03C31] mb-2" />
                                 <h3 className="font-medium">Football</h3>
                             </div>
                             <div className="flex flex-col items-center p-4 text-center rounded-xl bg-[#f8f9fa] hover:bg-[#E03C31]/5 transition-colors shadow-sm hover:shadow">
@@ -174,7 +191,7 @@ export default function Acceuil() {
                         </div>
                     </div>
                 </section>
-
+ 
                 {/* Latest Interviews with Enhanced Cards */}
                 <section className="w-full py-12 md:py-24 bg-[#f8f9fa]">
                     <div className="container px-4 md:px-6">
@@ -227,7 +244,7 @@ export default function Acceuil() {
                         </div>
                     </div>
                 </section>
-
+ 
                 {/* Featured Article */}
                 <section className="w-full py-12 bg-white">
                     <div className="container px-4 md:px-6">
@@ -240,8 +257,8 @@ export default function Acceuil() {
                                             <span className="inline-block bg-white/20 px-3 py-1 rounded-full text-sm font-medium">À la une</span>
                                             <h2 className="text-2xl md:text-3xl font-bold">{featuredArticle.title}</h2>
                                             <p className="text-white/80">{featuredArticle.description || featuredArticle.excerpt || ''}</p>
-                                            <Link to={`/articles/${featuredArticle.id}`}>
-                                                <Button className="bg-white text-[#E03C31] hover:bg-[#F6C54A] hover:text-[#E03C31] w-fit rounded-full">
+                                            <Link to={featuredArticle && featuredArticle.id ? `/articles/${featuredArticle.id}` : "#"}>
+                                                <Button type="button" className="bg-white text-[#E03C31] hover:bg-[#F6C54A] hover:text-[#E03C31] w-fit rounded-full">
                                                     Lire l'article complet
                                                 </Button>
                                             </Link>
@@ -261,7 +278,7 @@ export default function Acceuil() {
                         </div>
                     </div>
                 </section>
-
+ 
                 {/* Recent Articles with Enhanced Cards */}
                 <section className="w-full py-12 md:py-24 bg-[#f8f9fa]">
                     <div className="container px-4 md:px-6">
@@ -310,7 +327,7 @@ export default function Acceuil() {
                         </div>
                     </div>
                 </section>
-
+ 
                 {/* Newsletter Section */}
                 <section className="w-full py-12 bg-white">
                     <div className="container px-4 md:px-6">
@@ -322,10 +339,10 @@ export default function Acceuil() {
                                 </div>
                                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
                                     <form className="flex flex-col sm:flex-row gap-3">
-                                        <Input 
-                                            className="flex-1 bg-white/80 border-0 placeholder:text-gray-500 rounded-full" 
-                                            placeholder="Votre adresse email" 
-                                            type="email" 
+                                        <Input
+                                            className="flex-1 bg-white/80 border-0 placeholder:text-gray-500 rounded-full pl-4"
+                                            placeholder="Votre adresse email"
+                                            type="email"
                                         />
                                         <Button className="bg-white text-[#E03C31] hover:bg-[#F6C54A] hover:text-[#E03C31] rounded-full">
                                             S'abonner
@@ -340,7 +357,7 @@ export default function Acceuil() {
                     </div>
                 </section>
             </main>
-
+ 
             <footer className="w-full border-t py-8 bg-white">
                 <div className="container px-4 md:px-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
