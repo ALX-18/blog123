@@ -124,7 +124,7 @@ export default function ArticlesPage() {
 
                       <CardContent className="pt-4">
                         <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
-                          {article.description || "Aucune description."}
+                          {article.content || "Aucune description."}
                         </p>
                         <div className="flex justify-between items-center">
                           <Link to={`/articles/${article.id}`}>
