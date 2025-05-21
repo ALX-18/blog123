@@ -3,7 +3,6 @@ import { Button } from "./ui/button.jsx";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card.jsx";
 import React, { useEffect, useState } from "react";
 import { ArrowRight, User } from "lucide-react";
-import Logo from "@/assets/images/blog123.svg";
 import { db } from "../config/firebase";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import Logo from "../assets/images/blog123.svg";
