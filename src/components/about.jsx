@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button.jsx";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card.jsx";
+import {User} from "lucide-react";
+import Logo from "../assets/images/blog123.svg";
 
 const teamMembers = [
     {
@@ -49,12 +51,18 @@ const teamMembers = [
 ];
 
 export default function About() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+        setIsLoggedIn(!!token);
+    }, []);
     return (
         <div className="flex min-h-screen flex-col">
-            <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm">
                 <div className="container flex h-16 items-center justify-between">
-                    <Link to="/" className="flex items-center space-x-2">
-                        <span className="text-2xl font-bold text-[#E03C31]">BLOG123</span>
+                    <Link to="/" className="flex items-center space-x-2 overflow-visible">
+                        <img src={Logo || "/placeholder.svg"} alt="Logo" className="h-24 w-auto max-h-24 -my-4" style={{maxHeight:'96px'}} />
                     </Link>
                     <nav className="hidden md:flex space-x-6 text-sm font-medium">
                         <Link to="/Interview" className="transition-colors hover:text-[#E03C31]">Interviews</Link>
@@ -62,9 +70,19 @@ export default function About() {
                         <Link to="/sports" className="transition-colors hover:text-[#E03C31]">Sports</Link>
                         <Link to="/about" className="transition-colors hover:text-[#E03C31]">À propos</Link>
                     </nav>
-                    <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31]">
-                        S'abonner
-                    </Button>
+                    {isLoggedIn ? (
+                        <Link to="/profile">
+                            <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31] rounded-full">
+                                <User className="h-4 w-4 mr-2" /> Profil
+                            </Button>
+                        </Link>
+                    ) : (
+                        <Link to="/login">
+                            <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31] rounded-full">
+                                Connexion
+                            </Button>
+                        </Link>
+                    )}
                 </div>
             </header>
 

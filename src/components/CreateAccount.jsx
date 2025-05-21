@@ -18,6 +18,7 @@ export default function CreateAccount() {
     password: "",
     confirmPassword: "",
     role: "",
+    isrole: "user",
   })
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -96,10 +97,11 @@ export default function CreateAccount() {
       await addDoc(collection(db, "users"), {
         username: formData.username,
         email: formData.email,
-        role: formData.role,
+        role: formData.role,        // ← "Athlète", "Fan", etc.
+        isrole: formData.isrole,    // ← "user" par défaut, ou "admin"/"moderator"
         createdAt: serverTimestamp(),
         uid: userCredential.user.uid,
-      })
+      });
 
       setStep(5) // Afficher l'écran de succès
     } catch (error) {
