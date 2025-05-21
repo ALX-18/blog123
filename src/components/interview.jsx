@@ -1,21 +1,37 @@
-import { Link } from "react-router-dom"; // React Router
+import { Link } from "react-router-dom";
 import { Button } from "./ui/button.jsx";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card.jsx";
-import React, {useEffect, useState} from "react";
-import {ArrowRight, User} from "lucide-react";
-import leaMartin from "../assets/images/Accueil/lea-martin.png"
-import thomasDubois from "../assets/images/Accueil/thomas-dubois.png";
-import sophieLeroux from "../assets/images/Accueil/sophie-leroux.png";
+import React, { useEffect, useState } from "react";
+import { ArrowRight, User } from "lucide-react";
+import Logo from "@/assets/images/blog123.svg";
+import { db } from "../config/firebase";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import Logo from "../assets/images/blog123.svg";
-
 
 export default function Interview() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [interviews, setInterviews] = useState([]);
 
     useEffect(() => {
         const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
         setIsLoggedIn(!!token);
     }, []);
+
+    useEffect(() => {
+        const fetchInterviews = async () => {
+            try {
+                const q = query(collection(db, "interview"), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
+                const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setInterviews(data);
+            } catch (err) {
+                console.error("Erreur de chargement des interviews :", err);
+            }
+        };
+
+        fetchInterviews();
+    }, []);
+
     return (
         <div className="flex min-h-screen flex-col">
             <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm">
@@ -59,28 +75,28 @@ export default function Interview() {
                     </div>
                 </section>
 
-                
-                                <section className="w-full py-12 md:py-24 lg:py-32">
+                <section className="w-full py-12 md:py-24 lg:py-32">
                     <div className="container px-4 md:px-6">
                         <h2 className="text-3xl font-bold tracking-tighter mb-8">Dernières Interviews</h2>
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                            {[
-                                { name: "Léa Martin", sport: "Tennis", image: leaMartin },
-                                { name: "Thomas Dubois", sport: "Football", image: thomasDubois },
-                                { name: "Sophie Leroux", sport: "Natation", image: sophieLeroux },
-                            ].map((interview, index) => (
-                                <Card key={index} className="overflow-hidden">
-                                    <img
-                                        src={interview.image}
-                                        alt={interview.name}
-                                        className="w-full h-48 object-cover"
-                                    />
+                            {interviews.map((interview) => (
+                                <Card key={interview.id} className="overflow-hidden">
+                                    {interview.urlphoto && interview.urlphoto !== "/placeholder.svg" && (
+                                        <img
+                                            src={interview.urlphoto}
+                                            alt={interview.title}
+                                            className="w-full h-48 object-cover"
+                                            onError={(e) => e.target.style.display = "none"}
+                                        />
+                                    )}
                                     <CardHeader>
-                                        <CardTitle>{interview.name}</CardTitle>
+                                        <CardTitle>{interview.title || "Sans titre"}</CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <p className="text-sm text-muted-foreground">{interview.sport}</p>
-                                        <Link to="/interviews">
+                                        <p className="text-sm text-muted-foreground">
+                                            {interview.author || interview.postedBy || "Auteur inconnu"}
+                                        </p>
+                                        <Link to={`/interview/${interview.id}`}>
                                             <Button
                                                 variant="link"
                                                 className="p-0 h-auto font-semibold text-[#E03C31] hover:text-[#F6C54A]"
@@ -95,7 +111,6 @@ export default function Interview() {
                         </div>
                     </div>
                 </section>
-                
             </main>
 
             <footer className="w-full border-t py-6 md:py-0">
