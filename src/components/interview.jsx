@@ -6,6 +6,7 @@ import {ArrowRight, User} from "lucide-react";
 import leaMartin from "../assets/images/Accueil/lea-martin.png"
 import thomasDubois from "../assets/images/Accueil/thomas-dubois.png";
 import sophieLeroux from "../assets/images/Accueil/sophie-leroux.png";
+import Logo from "../assets/images/blog123.svg";
 
 
 export default function Interview() {
@@ -17,10 +18,10 @@ export default function Interview() {
     }, []);
     return (
         <div className="flex min-h-screen flex-col">
-            <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm">
                 <div className="container flex h-16 items-center justify-between">
-                    <Link to="/" className="flex items-center space-x-2">
-                        <span className="text-2xl font-bold text-[#E03C31]">BLOG123</span>
+                    <Link to="/" className="flex items-center space-x-2 overflow-visible">
+                        <img src={Logo || "/placeholder.svg"} alt="Logo" className="h-24 w-auto max-h-24 -my-4" style={{maxHeight:'96px'}} />
                     </Link>
                     <nav className="hidden md:flex space-x-6 text-sm font-medium">
                         <Link to="/Interview" className="transition-colors hover:text-[#E03C31]">Interviews</Link>

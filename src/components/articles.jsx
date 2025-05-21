@@ -7,6 +7,8 @@ import { db } from "../config/firebase"
 import { collection, getDocs, query, orderBy } from "firebase/firestore"
 import { getAuth } from "firebase/auth"
 import { updateDoc, arrayUnion, doc } from "firebase/firestore"
+import Logo from "../assets/images/blog123.svg";
+
 export default function ArticlesPage() {
   const [articles, setArticles] = useState([])
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,7 +27,7 @@ export default function ArticlesPage() {
           ...doc.data(),
         }))
         setArticles(articlesData)
-      } catch (error) {
+      } catch (error) {a
         console.error("Erreur lors de la récupération des articles:", error)
       }
     }
@@ -55,8 +57,8 @@ export default function ArticlesPage() {
       <div className="flex min-h-screen flex-col bg-[#f8f9fa]">
         <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm">
           <div className="container flex h-16 items-center justify-between">
-            <Link to="/" className="flex items-center space-x-2">
-              <span className="text-2xl font-bold text-[#E03C31]">BLOG123</span>
+            <Link to="/" className="flex items-center space-x-2 overflow-visible">
+              <img src={Logo || "/placeholder.svg"} alt="Logo" className="h-24 w-auto max-h-24 -my-4" style={{maxHeight:'96px'}} />
             </Link>
             <nav className="hidden md:flex space-x-6 text-sm font-medium">
               <Link to="/Interview" className="hover:text-[#E03C31]">Interviews</Link>

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Link } from "react-router-dom";
 import {Button} from "@/components/ui/button.jsx";
 import {User} from "lucide-react";
+import Logo from "../assets/images/blog123.svg";
 
 export default function Sports() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -51,29 +52,32 @@ export default function Sports() {
 
     return (
         <div className="flex min-h-screen flex-col">
-            <header className="w-full border-b bg-white">
-                <div className="container mx-auto flex h-16 items-center justify-between px-4">
-                    <Link to="/" className="text-2xl font-bold text-[#E03C31]">
-                        BLOG123
+            <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm">
+                <div className="container flex h-16 items-center justify-between">
+                    <Link to="/" className="flex items-center space-x-2 overflow-visible">
+                        <img src={Logo || "/placeholder.svg"} alt="Logo" className="h-24 w-auto max-h-24 -my-4" style={{maxHeight:'96px'}} />
                     </Link>
-                    <nav className="flex space-x-6 text-sm font-medium">
+                    <nav className="hidden md:flex space-x-6 text-sm font-medium">
                         <Link to="/interview" className="hover:text-[#E03C31]">Interviews</Link>
                         <Link to="/articles" className="hover:text-[#E03C31]">Articles</Link>
                         <Link to="/sports" className="hover:text-[#E03C31]">Sports</Link>
                         <Link to="/about" className="hover:text-[#E03C31]">À propos</Link>
-                    </nav>{isLoggedIn ? (
-                    <Link to="/profile">
-                        <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31] rounded-full">
-                            <User className="h-4 w-4 mr-2" /> Profil
-                        </Button>
-                    </Link>
-                ) : (
-                    <Link to="/login">
-                        <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31] rounded-full">
-                            Connexion
-                        </Button>
-                    </Link>
-                )}
+                    </nav>
+                    <div className="flex items-center space-x-4">
+                        {isLoggedIn ? (
+                            <Link to="/profile">
+                                <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31] rounded-full">
+                                    <User className="h-4 w-4 mr-2" /> Profil
+                                </Button>
+                            </Link>
+                        ) : (
+                            <Link to="/login">
+                                <Button className="bg-[#E03C31] text-white hover:bg-[#F6C54A] hover:text-[#E03C31] rounded-full">
+                                    Connexion
+                                </Button>
+                            </Link>
+                        )}
+                    </div>
                 </div>
             </header>
 
